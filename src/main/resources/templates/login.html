@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Marketplace — Sign In</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <span class="navbar-brand">Marketplace</span>
+        </div>
+    </nav>
+</header>
+<main class="container pt-3">
+    <h1 class="mb-3">Log in to your account</h1>
+    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        Invalid username and password.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.logout}" class="alert alert-warning alert-dismissible fade show" role="alert">
+        You have been logged out.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <form th:action="@{/login}" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" name="username" class="form-control" type="text"/>
+        </div>
+        <div class=mb-3>
+            <label for="password" class="form-label">Password</label>
+            <input id="password" name="password" class="form-control" type="text"/>
+        </div>
+        <p class=mb-3><a th:href="@{/register}">Don't have an account?</a></p>
+        <button type="submit" class="btn btn-success">Sign In</button>
+    </form>
+</main>
+</body>
+</html>
