@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 @Controller
-public class UserController {
+public class AuthenticationController {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public AuthenticationController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
