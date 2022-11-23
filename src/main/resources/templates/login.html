@@ -8,7 +8,7 @@
 <main class="container pt-3" layout:fragment="content">
     <h1 class="mb-3">Sign in to your account</h1>
     <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
-        Invalid username and password.
+        Invalid email and password.
         <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
     </div>
     <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.logout}">
@@ -17,8 +17,8 @@
     </div>
     <form method="post" th:action="@{/login}">
         <div class="mb-3">
-            <label class="form-label" for="username">Username</label>
-            <input class="form-control" id="username" name="username" type="text"/>
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control" id="email" name="email" type="email"/>
         </div>
         <div class="mb-3">
             <label class="form-label" for="password">Password</label>
