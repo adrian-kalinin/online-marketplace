@@ -9,11 +9,29 @@
     <h1 class="mb-3">Create a new account</h1>
     <form method="post" th:action="@{/register}" th:object="${user}">
         <div class="mb-3">
-            <label class="form-label" for="username">Username</label>
-            <input class="form-control mb-3" id="username" th:field="*{username}" type="text"/>
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control mb-3" id="email" th:field="*{email}" type="email"/>
             <div class="alert alert-danger alert-dismissible fade show" role="alert"
-                 th:if="${#fields.hasErrors('username')}">
-                <span th:errors="*{username}">Error</span>
+                 th:if="${#fields.hasErrors('email')}">
+                <span th:errors="*{email}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="firstName">First name</label>
+            <input class="form-control mb-3" id="firstName" th:field="*{firstName}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('firstName')}">
+                <span th:errors="*{firstName}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="lastName">Last name</label>
+            <input class="form-control mb-3" id="lastName" th:field="*{lastName}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('lastName')}">
+                <span th:errors="*{lastName}">Error</span>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
             </div>
         </div>

@@ -11,8 +11,14 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true, length = 16)
-    private String username;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "first_name", length = 50, nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", length = 50, nullable = false)
+    private String lastName;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -23,8 +29,10 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String role) {
-        this.username = username;
+    public User(String email, String firstName, String lastName, String password, String role) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.role = role;
     }
@@ -37,12 +45,28 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -65,10 +89,10 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }
-
 }

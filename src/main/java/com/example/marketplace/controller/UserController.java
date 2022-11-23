@@ -40,8 +40,8 @@ public class UserController {
             return "register";
         }
 
-        if (userRepository.findByUsername(user.getUsername()) != null) {
-            bindingResult.rejectValue("username", "err.username", "Username already exists");
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            bindingResult.rejectValue("email", "err.email", "Email already exists");
             return "register";
         }
 
