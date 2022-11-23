@@ -28,12 +28,15 @@ public class WebSecurityConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests((request) -> request
+                        .antMatchers("/").permitAll()
+                        .antMatchers("/feed").permitAll()
+                        .antMatchers("/register").permitAll()
                         .antMatchers("/css/**").permitAll()
                         .antMatchers("/js/**").permitAll()
-                        .antMatchers("/register").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login")
+                        .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
