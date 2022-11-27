@@ -23,14 +23,19 @@ public class Product {
     @Column(name = "location", nullable = false, length = 120)
     private String location;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Product() {
     }
 
-    public Product(String title, String description, double price, String location) {
+    public Product(String title, String description, double price, String location, User user) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.location = location;
+        this.user = user;
     }
 
     public Long getId() {
@@ -73,6 +78,14 @@ public class Product {
         this.location = location;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -81,6 +94,7 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", location='" + location + '\'' +
+                ", user=" + user +
                 '}';
     }
 

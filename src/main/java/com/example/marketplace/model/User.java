@@ -1,6 +1,7 @@
 package com.example.marketplace.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "marketplace_users")
@@ -25,6 +26,9 @@ public class User {
 
     @Column(name = "role", length = 20, nullable = false)
     private String role;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Product> products;
 
     public User() {
     }
@@ -83,6 +87,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
