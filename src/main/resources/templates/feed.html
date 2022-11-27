@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title layout:fragment="title">Marketplace — Feed</title>
+</head>
+<body>
+<main class="container pt-3" layout:fragment="content">
+    <div th:each="product: ${products}" class="card mb-3">
+        <div class="card-body">
+            <h5 th:text="${product.title}" class="card-title"></h5>
+            <p th:text="${product.description}" class="card-text"></p>
+            <p class="d-flex justify-content-between card-text">
+                <small th:text="${product.location}" class="text-muted"></small>
+                <small th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT') + ' €'}" class="text-muted"></small>
+            </p>
+        </div>
+    </div>
+</main>
+</body>
+</html>
