@@ -7,7 +7,7 @@
 <body>
 <main class="container pt-3" layout:fragment="content">
     <h1 class="title mb-3">Your profile</h1>
-    <form method="post" th:action="@{/profile/update}" th:object="${user}" class="mb-4">
+    <form class="mb-4" method="post" th:action="@{/profile/update}" th:object="${user}">
         <input th:field="*{id}" type="hidden"/>
         <input th:field="*{email}" type="hidden"/>
         <input th:field="*{role}" type="hidden"/>
@@ -33,13 +33,14 @@
         <button class="btn btn-success" type="submit">Save changes</button>
     </form>
     <h4 class="title mb-3">Published products</h4>
-    <div th:each="product: ${products}" class="card mb-3">
+    <div class="card mb-3" th:each="product: ${products}">
         <div class="card-body">
-            <h5 th:text="${product.title}" class="card-title"></h5>
-            <p th:text="${product.description}" class="card-text"></p>
+            <h5 class="card-title" th:text="${product.title}"></h5>
+            <p class="card-text" th:text="${product.description}"></p>
             <p class="d-flex justify-content-between card-text">
-                <small th:text="${product.location}" class="text-muted"></small>
-                <small th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT') + ' €'}" class="text-muted"></small>
+                <small class="text-muted" th:text="${product.location}"></small>
+                <small class="text-muted"
+                       th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT') + ' €'}"></small>
             </p>
         </div>
     </div>
