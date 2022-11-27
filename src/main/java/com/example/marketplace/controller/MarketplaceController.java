@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -63,6 +64,21 @@ public class MarketplaceController {
 
         if (Objects.equals(user.getId(), currentUser.getId())) {
             userRepository.save(user);
+        }
+
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/product/{id}/delete")
+    public String deleteBook(@PathVariable("id") Long productId, Principal principal) {
+        if (productRepository.existsById(productId)) {
+            String username = principal.getName();
+            User currentUser = userRepository.findByEmail(username);
+            Product product = productRepository.getById(productId);
+
+            if (Objects.equals(product.getUser().getId(), currentUser.getId())) {
+                productRepository.deleteById(productId);
+            }
         }
 
         return "redirect:/profile";
