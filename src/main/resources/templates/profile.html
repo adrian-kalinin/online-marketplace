@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title layout:fragment="title">Marketplace — Profile</title>
+</head>
+<body>
+<main class="container pt-3" layout:fragment="content">
+    <h1 class="title mb-3">Your profile</h1>
+    <form method="post" th:action="@{/profile/update}" th:object="${user}" class="mb-4">
+        <input th:field="*{id}" type="hidden"/>
+        <input th:field="*{email}" type="hidden"/>
+        <input th:field="*{role}" type="hidden"/>
+        <input th:field="*{password}" type="hidden"/>
+        <div class="mb-3">
+            <label class="form-label" for="firstName">First name</label>
+            <input class="form-control mb-3" id="firstName" th:field="*{firstName}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('firstName')}">
+                <span th:errors="*{firstName}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="lastName">Last name</label>
+            <input class="form-control mb-3" id="lastName" th:field="*{lastName}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('lastName')}">
+                <span th:errors="*{lastName}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <button class="btn btn-success" type="submit">Save changes</button>
+    </form>
+    <h4 class="title mb-3">Published products</h4>
+    <div th:each="product: ${products}" class="card mb-3">
+        <div class="card-body">
+            <h5 th:text="${product.title}" class="card-title"></h5>
+            <p th:text="${product.description}" class="card-text"></p>
+            <p class="d-flex justify-content-between card-text">
+                <small th:text="${product.location}" class="text-muted"></small>
+                <small th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT') + ' €'}" class="text-muted"></small>
+            </p>
+        </div>
+    </div>
+</main>
+</body>
+</html>
