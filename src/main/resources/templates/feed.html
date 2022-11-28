@@ -6,7 +6,7 @@
 </head>
 <body>
 <main class="container pt-3" layout:fragment="content">
-    <h1 class="title mb-4">Recently published products</h1>
+    <h1 class="title mb-3">Recently published products</h1>
     <div class="card mb-3" th:each="product: ${products}">
         <div class="card-header bold" th:text="${product.title}"></div>
         <div class="card-body">
