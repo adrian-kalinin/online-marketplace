@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 public class MarketplaceController {
@@ -69,8 +70,30 @@ public class MarketplaceController {
         return "redirect:/profile";
     }
 
+    @GetMapping("/product/{id}/edit")
+    public String productEdit(@PathVariable("id") Long productId, Model model) {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            model.addAttribute("product", product.get());
+            return "productEdit";
+        }
+
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/product/{id}/edit")
+    public String productEdit(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "productEdit";
+        }
+
+        productRepository.save(product);
+        return "redirect:/profile";
+    }
+
     @GetMapping("/product/{id}/delete")
-    public String deleteBook(@PathVariable("id") Long productId, Principal principal) {
+    public String productDelete(@PathVariable("id") Long productId, Principal principal) {
         if (productRepository.existsById(productId)) {
             String username = principal.getName();
             User currentUser = userRepository.findByEmail(username);

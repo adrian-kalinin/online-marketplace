@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title layout:fragment="title">Marketplace — Edit Product</title>
+</head>
+<body>
+<main class="container pt-3" layout:fragment="content">
+    <h1 class="mb-3">Edit product</h1>
+    <form method="post" th:action="@{/product/{id}/edit(id=${product.id})}" th:object="${product}">
+        <input th:field="*{id}" type="hidden"/>
+        <input th:field="*{user}" type="hidden"/>
+        <div class="mb-3">
+            <label class="form-label" for="title">Title</label>
+            <input class="form-control" id="title" required th:field="*{title}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('title')}">
+                <span th:errors="*{title}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" th:field="*{description}" cols="30" rows="10"></textarea>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('description')}">
+                <span th:errors="*{title}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="location">Location</label>
+            <input class="form-control" id="location" required th:field="*{location}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('location')}">
+                <span th:errors="*{title}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="price">Price</label>
+            <input class="form-control" id="price" required th:field="*{price}" type="number"/>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                 th:if="${#fields.hasErrors('price')}">
+                <span th:errors="*{title}">Error</span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+        <button class="btn btn-success" type="submit">Save</button>
+    </form>
+</main>
+</body>
+</html>
