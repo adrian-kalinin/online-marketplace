@@ -38,26 +38,26 @@ public class MarketplaceController {
 
     @GetMapping("/feed")
     public String feed(Model model) {
-        model.addAttribute("products", productRepository.findAll());
+        model.addAttribute("products", productRepository.findAllByOrderByIdDesc());
         return "feed";
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/account")
     public String profile(Principal principal, Model model) {
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
-        List<Product> products = productRepository.findAllByUser(currentUser);
+        List<Product> products = productRepository.findAllByUserOrderByIdDesc(currentUser);
 
         model.addAttribute("user", currentUser);
         model.addAttribute("products", products);
 
-        return "profile";
+        return "account";
     }
 
-    @PostMapping("/profile/update")
+    @PostMapping("/account/edit")
     public String profileEdit(@Valid @ModelAttribute("user") User user, Principal principal, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "profile";
+            return "account";
         }
 
         String username = principal.getName();
@@ -67,7 +67,28 @@ public class MarketplaceController {
             userRepository.save(user);
         }
 
-        return "redirect:/profile";
+        return "redirect:/account";
+    }
+
+    @GetMapping("/product/create")
+    public String productCreate(Model model) {
+        model.addAttribute("product", new Product());
+        return "productCreate";
+    }
+
+    @PostMapping("/product/create")
+    public String productCreate(@Valid @ModelAttribute("product") Product product, Principal principal, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "productCreate";
+        }
+
+        String username = principal.getName();
+        User currentUser = userRepository.findByEmail(username);
+
+        product.setUser(currentUser);
+        productRepository.save(product);
+
+        return "redirect:/account";
     }
 
     @GetMapping("/product/{id}/edit")
@@ -79,7 +100,7 @@ public class MarketplaceController {
             return "productEdit";
         }
 
-        return "redirect:/profile";
+        return "redirect:/account";
     }
 
     @PostMapping("/product/{id}/edit")
@@ -89,7 +110,7 @@ public class MarketplaceController {
         }
 
         productRepository.save(product);
-        return "redirect:/profile";
+        return "redirect:/account";
     }
 
     @GetMapping("/product/{id}/delete")
@@ -104,7 +125,7 @@ public class MarketplaceController {
             }
         }
 
-        return "redirect:/profile";
+        return "redirect:/account";
     }
 
 }
