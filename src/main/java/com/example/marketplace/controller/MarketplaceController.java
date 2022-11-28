@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 public class MarketplaceController {
@@ -92,24 +91,34 @@ public class MarketplaceController {
     }
 
     @GetMapping("/product/{id}/edit")
-    public String productEdit(@PathVariable("id") Long productId, Model model) {
-        Optional<Product> product = productRepository.findById(productId);
+    public String productEdit(@PathVariable("id") Long productId, Principal principal, Model model) {
+        if (productRepository.existsById(productId)) {
+            String username = principal.getName();
+            User currentUser = userRepository.findByEmail(username);
+            Product product = productRepository.getById(productId);
 
-        if (product.isPresent()) {
-            model.addAttribute("product", product.get());
-            return "productEdit";
+            if (Objects.equals(product.getUser().getId(), currentUser.getId()) || Objects.equals(currentUser.getRole(), "ADMIN")) {
+                model.addAttribute("product", product);
+                return "productEdit";
+            }
         }
 
         return "redirect:/account";
     }
 
     @PostMapping("/product/{id}/edit")
-    public String productEdit(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "productEdit";
+    public String productEdit(@Valid @ModelAttribute("product") Product product, Principal principal, BindingResult bindingResult) {
+        String username = principal.getName();
+        User currentUser = userRepository.findByEmail(username);
+
+        if (Objects.equals(product.getUser().getId(), currentUser.getId()) || Objects.equals(currentUser.getRole(), "ADMIN")) {
+            if (bindingResult.hasErrors()) {
+                return "productEdit";
+            }
+
+            productRepository.save(product);
         }
 
-        productRepository.save(product);
         return "redirect:/account";
     }
 
@@ -120,7 +129,7 @@ public class MarketplaceController {
             User currentUser = userRepository.findByEmail(username);
             Product product = productRepository.getById(productId);
 
-            if (Objects.equals(product.getUser().getId(), currentUser.getId())) {
+            if (Objects.equals(product.getUser().getId(), currentUser.getId()) || Objects.equals(currentUser.getRole(), "ADMIN")) {
                 productRepository.deleteById(productId);
             }
         }

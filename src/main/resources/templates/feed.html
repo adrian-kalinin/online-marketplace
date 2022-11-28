@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title layout:fragment="title">Marketplace — Feed</title>
 </head>
@@ -15,6 +15,12 @@
                 <small class="text-muted" th:text="${product.location}"></small>
                 <small class="text-muted"
                        th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT') + ' €'}"></small>
+            </p>
+        </div>
+        <div class="card-footer" sec:authorize="hasAuthority('ADMIN')">
+            <p class="d-flex justify-content-between card-text">
+                <a class="btn btn-primary" th:href="@{/product/{id}/edit(id=${product.id})}">Edit</a>
+                <a class="btn btn-danger" th:href="@{/product/{id}/delete(id=${product.id})}">Delete</a>
             </p>
         </div>
     </div>
