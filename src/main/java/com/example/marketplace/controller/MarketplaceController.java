@@ -99,12 +99,13 @@ public class MarketplaceController {
 
     @GetMapping("/product/{id}/edit")
     public String productEdit(@PathVariable("id") Long productId, Principal principal, Model model) {
-        if (productRepository.existsById(productId)) {
-            String username = principal.getName();
-            User currentUser = userRepository.findByEmail(username);
-            Product product = productRepository.getById(productId);
+        Optional<Product> product = productRepository.findById(productId);
 
-            if (Objects.equals(product.getUser().getId(), currentUser.getId()) || Objects.equals(currentUser.getRole(), "ADMIN")) {
+        if (product.isPresent()) {
+            User currentUser = userRepository.findByEmail(principal.getName());
+            User productOwner = product.get().getUser();
+
+            if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
                 model.addAttribute("product", product);
                 return "productEdit";
             }
@@ -115,10 +116,10 @@ public class MarketplaceController {
 
     @PostMapping("/product/{id}/edit")
     public String productEdit(@Valid @ModelAttribute("product") Product product, Principal principal, BindingResult bindingResult) {
-        String username = principal.getName();
-        User currentUser = userRepository.findByEmail(username);
+        User currentUser = userRepository.findByEmail(principal.getName());
+        User productOwner = product.getUser();
 
-        if (Objects.equals(product.getUser().getId(), currentUser.getId()) || Objects.equals(currentUser.getRole(), "ADMIN")) {
+        if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
             if (bindingResult.hasErrors()) {
                 return "productEdit";
             }
@@ -131,12 +132,13 @@ public class MarketplaceController {
 
     @GetMapping("/product/{id}/delete")
     public String productDelete(@PathVariable("id") Long productId, Principal principal) {
-        if (productRepository.existsById(productId)) {
-            String username = principal.getName();
-            User currentUser = userRepository.findByEmail(username);
-            Product product = productRepository.getById(productId);
+        Optional<Product> product = productRepository.findById(productId);
 
-            if (Objects.equals(product.getUser().getId(), currentUser.getId()) || Objects.equals(currentUser.getRole(), "ADMIN")) {
+        if (product.isPresent()) {
+            User currentUser = userRepository.findByEmail(principal.getName());
+            User productOwner = product.get().getUser();
+
+            if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
                 productRepository.deleteById(productId);
             }
         }
