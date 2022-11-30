@@ -7,6 +7,13 @@
 <body>
 <main class="container pt-3" layout:fragment="content">
     <h1 class="title mb-3">Recently published products</h1>
+    <form method="get" th:action="@{/feed}">
+        <label class="form-label d-none" for="search">Search</label>
+        <div class="input-group mb-3">
+            <input class="form-control" id="search" name="search" th:value="${query}" type="text"/>
+            <button class="btn btn-success" type="submit">Search</button>
+        </div>
+    </form>
     <div class="card mb-3" th:each="product: ${products}">
         <div class="card-header fw-bold" th:text="${product.title}"></div>
         <div class="card-body">

@@ -8,15 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 public class MarketplaceController {
@@ -36,8 +34,17 @@ public class MarketplaceController {
     }
 
     @GetMapping("/feed")
-    public String feed(Model model) {
-        model.addAttribute("products", productRepository.findAllByOrderByIdDesc());
+    public String feed(@RequestParam Optional<String> search, Model model) {
+        List<Product> products;
+
+        if (search.isPresent()) {
+            products = productRepository.findAllByTitleContainingIgnoreCaseOrderByIdDesc(search.get());
+        } else {
+            products = productRepository.findAllByOrderByIdDesc();
+        }
+        model.addAttribute("products", products);
+        model.addAttribute("query", search.orElse(""));
+
         return "feed";
     }
 
