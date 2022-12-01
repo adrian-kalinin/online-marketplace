@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
 public class MarketplaceApplication {
@@ -20,6 +21,7 @@ public class MarketplaceApplication {
     }
 
     @Bean
+    @Profile({"dev & !test"})
     public CommandLineRunner createDemo(UserRepository userRepository, ProductRepository productRepository) {
         return (args) -> {
             log.info("Creating and saving demo data.");
