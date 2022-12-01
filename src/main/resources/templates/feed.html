@@ -17,11 +17,11 @@
     <div class="card mb-3" th:each="product: ${products}">
         <div class="card-header fw-bold" th:text="${product.title}"></div>
         <div class="card-body">
-            <p class="card-text" th:text="${product.description}"></p>
+            <p class="card-text text-truncate" th:text="${product.description}"></p>
             <p class="d-flex justify-content-between card-text">
-                <small class="text-muted" th:text="${product.location}"></small>
                 <small class="text-muted"
                        th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT') + ' €'}"></small>
+                <a class="card-link" th:href="@{/product/{id}/details(id=${product.id})}">View</a>
             </p>
         </div>
         <div class="card-footer" sec:authorize="hasAuthority('ADMIN')">

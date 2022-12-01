@@ -76,6 +76,19 @@ public class MarketplaceController {
         return "redirect:/account";
     }
 
+
+    @GetMapping("/product/{id}/details")
+    public String product(@PathVariable("id") Long productId, Model model) {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            model.addAttribute("product", product.get());
+            return "product";
+        }
+
+        return "redirect:/feed";
+    }
+
     @GetMapping("/product/create")
     public String productCreate(Model model) {
         model.addAttribute("product", new Product());
