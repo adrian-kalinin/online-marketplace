@@ -40,15 +40,18 @@ public class AuthenticationController {
             return "register";
         }
 
+        // Check if email already exists
         if (userRepository.findByEmail(user.getEmail()) != null) {
             bindingResult.rejectValue("email", "err.email", "Email already exists");
             return "register";
         }
 
+        // Encode raw password to hashed value
         String password = user.getPassword();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encryptedPassword = encoder.encode(password);
 
+        // Set encrypted password and default role
         user.setPassword(encryptedPassword);
         user.setRole("USER");
 

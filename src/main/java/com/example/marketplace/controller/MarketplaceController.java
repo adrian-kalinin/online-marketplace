@@ -38,10 +38,13 @@ public class MarketplaceController {
         List<Product> products;
 
         if (search.isPresent()) {
+            // Find products with the search query
             products = productRepository.findAllByTitleContainingIgnoreCaseOrderByIdDesc(search.get());
         } else {
+            // Find all products
             products = productRepository.findAllByOrderByIdDesc();
         }
+
         model.addAttribute("products", products);
         model.addAttribute("query", search.orElse(""));
 
@@ -50,6 +53,7 @@ public class MarketplaceController {
 
     @GetMapping("/account")
     public String profile(Principal principal, Model model) {
+        // Get current user and their products
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
         List<Product> products = productRepository.findAllByUserOrderByIdDesc(currentUser);
@@ -66,9 +70,11 @@ public class MarketplaceController {
             return "account";
         }
 
+        // Get current user
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
 
+        // Check if the current user updates themselves and not another user
         if (Objects.equals(user.getId(), currentUser.getId())) {
             userRepository.save(user);
         }
@@ -101,6 +107,7 @@ public class MarketplaceController {
             return "productCreate";
         }
 
+        // Get current user
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
 
@@ -115,9 +122,11 @@ public class MarketplaceController {
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
+            // Get current user and product owner
             User currentUser = userRepository.findByEmail(principal.getName());
             User productOwner = product.get().getUser();
 
+            // Check if the current user is the product owner or is an admin
             if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
                 model.addAttribute("product", product);
                 return "productEdit";
@@ -129,9 +138,11 @@ public class MarketplaceController {
 
     @PostMapping("/product/{id}/edit")
     public String productEdit(@Valid @ModelAttribute("product") Product product, Principal principal, BindingResult bindingResult) {
+        // Get current user and product owner
         User currentUser = userRepository.findByEmail(principal.getName());
         User productOwner = product.getUser();
 
+        // Check if the current user is the product owner or is an admin
         if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
             if (bindingResult.hasErrors()) {
                 return "productEdit";
@@ -148,9 +159,11 @@ public class MarketplaceController {
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
+            // Get current user and product owner
             User currentUser = userRepository.findByEmail(principal.getName());
             User productOwner = product.get().getUser();
 
+            // Check if the current user is the product owner or is an admin
             if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
                 productRepository.deleteById(productId);
             }
