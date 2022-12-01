@@ -128,7 +128,7 @@ public class MarketplaceController {
 
             // Check if the current user is the product owner or is an admin
             if (currentUser.getId().equals(productOwner.getId()) || currentUser.getRole().equals("ADMIN")) {
-                model.addAttribute("product", product);
+                model.addAttribute("product", product.get());
                 return "productEdit";
             }
         }
